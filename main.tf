@@ -15,7 +15,7 @@ resource "aws_s3_bucket" "b" {
   bucket = "thegroupdotbucket"
   acl    = "private"
 
-  vesioning {
+  versioning {
     enabled = true
   }
 
