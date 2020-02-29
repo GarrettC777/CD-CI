@@ -19,3 +19,6 @@ Discource Application using AWS Code Pipeline.
     - External Data Source (GIT HTTPS Access)
     - EC2 Creation
 
+## CD-CI Architecture
+
+![Alt](/CI-CDArchitecture.png "Architecture")
