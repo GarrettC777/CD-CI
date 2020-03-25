@@ -1,8 +1,10 @@
+#Provider Information
 provider "aws" {
   region  = "us-west-2"
   profile = "default"
 }
 
+#S3 Backend Information
 terraform {
     backend "s3" {
     region          = "us-west-2"
@@ -25,11 +27,13 @@ resource "aws_s3_bucket" "b" {
   }
 }
 
+#CodeCommit Repository Creation
 resource "aws_codecommit_repository" "test" {
   repository_name = "MyTestRepository"
   description     = "This is the Sample App Repository"
 }
 
+#IAM Configuration
 resource "aws_iam_group" "thegroup" {
   name   = "thegroup"
   path   = "/cit480/"
