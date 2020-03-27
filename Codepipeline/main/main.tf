@@ -63,9 +63,19 @@ resource "aws_internet_gateway" "gw" {
   }
 }
 
-# Define the route table
+# Define NAT Gateway
+resource "aws_nat_gateway" "gw" {
+  allocation_id = "${aws_eip.nat.id}"
+  subnet_id     = "${aws_subnet.public-subnet.id}"
+
+  tags = {
+    Name = "gw NAT"
+  }
+}
+
+# Define the public route table
 resource "aws_route_table" "public-rt" {
-  vpc_id = "${aws_vpc.default.id}"
+  vpc_id = "${aws_vpc.the_main.id}"
 
   route {
     cidr_block = "0.0.0.0/0"
@@ -77,8 +87,49 @@ resource "aws_route_table" "public-rt" {
   }
 }
 
-# Assign the route table to the public Subnet
-resource "aws_route_table_association" "public-rt" {
+# Define the private route table
+resource "aws_route_table" "private-rt" {
+  vpc_id = "${aws_vpc.the_main.id}"
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = "${aws_nat_gateway.gw.id}"
+  }
+
+  tags {
+    Name = "Private Subnet RT"
+  }
+}
+
+# Assign the public route table to the public Subnet
+resource "aws_route_table_association" "public-rt-assoc" {
   subnet_id = "${aws_subnet.public-subnet.id}"
   route_table_id = "${aws_route_table.public-rt.id}"
+}
+
+# Assign the private route table to the private Subnet
+resource "aws_route_table_association" "private-rt-assoc" {
+  subnet_id = "${aws_subnet.private-subnet.id}"
+  route_table_id = "${aws_route_table.private-rt-rt.id}"
+}
+
+# Define Elastic IP
+resource "aws_eip" "nat" {
+  instance = "${aws_instance.natinstance.id}"
+  vpc      = true
+}
+
+# 
+provider "aws" {
+  region = "us-west-2"
+}
+
+# Create NAT Instance EC2
+resource "aws_instance" "natinstance" {
+  ami           = "$ami-0ce21b51cb31a48b8"
+  instance_type = "t2.micro"
+
+  tags = {
+    Name = "NAT Instance"
+  }
 }
