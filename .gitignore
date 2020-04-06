@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-.terraform/plugins/linux_amd64/terraform-provider-aws_v2.50.0_x4
-.terraform/plugins/linux_amd64/lock.json
-=======
+
 # Local .terraform directories
 **/.terraform/*
 
@@ -31,4 +28,3 @@ override.tf.json
 
 # Include tfplan files to ignore the plan output of command: terraform plan -out=tfplan
 # example: *tfplan*
->>>>>>> deb2651541298da877779be311e9c30be4b1a486

@@ -23,6 +23,73 @@ resource "aws_codecommit_repository" "test" {
 
 # Define the VPC
 resource "aws_vpc" "the_main" {
+  cidr_block = "10.0.0.0/16"
+  enable_dns_hostnames = true
+
+  tags {
+    Name = "main-vpc"
+  }
+}
+
+# Define the public subnet
+resource "aws_subnet" "public-subnet" {
+  vpc_id = "${aws_vpc.the_main.id}"
+  cidr_block = "10.0.2.0/24"
+  availability_zone = "us-west-2"
+
+  tags {
+    Name = "public subnet"
+  }
+}
+
+# Define the private subnet
+resource "aws_subnet" "private-subnet" {
+  vpc_id = "${aws_vpc.the_main.id}"
+  cidr_block = "10.0.2.0/24"
+  availability_zone = "us-west-2"
+
+  tags {
+    Name = "private subnet"
+  }
+}
+
+# Define the internet gateway
+resource "aws_internet_gateway" "gw" {
+  vpc_id = "${aws_vpc.the_main.id}"
+
+  tags {
+    Name = "VPC IGW"
+  }
+}
+
+# Define NAT Gateway
+resource "aws_nat_gateway" "gw" {
+  allocation_id = "${aws_eip.nat.id}"
+  subnet_id     = "${aws_subnet.public-subnet.id}"
+
+  tags = {
+    Name = "gw NAT"
+  }
+}
+
+# Define the public route table
+resource "aws_route_table" "public-rt" {
+  vpc_id = "${aws_vpc.the_main.id}"
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = "${aws_internet_gateway.gw.id}"
+  }
+
+  tags {
+    Name = "Public Subnet RT"
+  }
+}
+
+# Define the private route table
+resource "aws_route_table" "private-rt" {
+  vpc_id = "${aws_vpc.the_main.id}"
+=======
   cidr_block           = "10.0.0.0/16"
   enable_dns_hostnames = true
 
@@ -129,4 +196,3 @@ resource "aws_instance" "natinstance" {
     Name = "NAT Instance"
   }
 }
-
