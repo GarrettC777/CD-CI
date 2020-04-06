@@ -5,7 +5,7 @@ provider "aws" {
 
 # S3 bucket storage container 
 resource "aws_s3_bucket" "tf-remote-state" {
-  bucket = "cit481gps3bucket"
+  bucket = "cit481gp3bucket"
 
   versioning {
     enabled = true
@@ -17,8 +17,8 @@ resource "aws_s3_bucket" "tf-remote-state" {
 }
 
 # State Lock for the S3 Bucket 
-resource "aws_dynamodb_table" "dynamodb-tf-state-lock" {
-  name            = "tf-state-lock" 
+resource "aws_dynamodb_table" "dynamodb-state-lock" {
+  name            = "be-lock" 
   hash_key        = "LockID"
   read_capacity   = 20
   write_capacity = 20
