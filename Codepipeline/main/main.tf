@@ -114,19 +114,6 @@ resource "aws_route_table_association" "private-rt-assoc" {
 
 # Define Elastic IP address
 resource "aws_eip" "nat" {
-  instance = "${aws_instance.natinstance.id}"
   vpc      = true
+   depends_on = ["aws_internet_gateway.igw"]
 }
-
-# Create NAT Instance EC2
-resource "aws_instance" "natinstance" {
-  ami           = "ami-0ce21b51cb31a48b8"
-  instance_type = "t2.micro"
-  vpc_security_group_ids = ["${aws_security_group.allow_http.id}"]
-  subnet_id = "${aws_subnet.public-subnet.id}"
-
-  tags = {
-    Name = "NAT Instance"
-  }
-}
-
