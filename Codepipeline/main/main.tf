@@ -111,3 +111,9 @@ resource "aws_route_table_association" "private-rt-assoc" {
   subnet_id      = "${aws_subnet.private-subnet.id}"
   route_table_id = "${aws_route_table.private-rt.id}"
 }
+
+# Define Elastic IP address
+resource "aws_eip" "nat" {
+  vpc      = true
+   depends_on = ["aws_internet_gateway.igw"]
+} 
