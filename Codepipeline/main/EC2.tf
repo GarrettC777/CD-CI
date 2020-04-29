@@ -17,6 +17,7 @@ resource "aws_instance" "webserver" {
   vpc_security_group_ids = ["${aws_security_group.allow_ssh.id}"]
   subnet_id = "${aws_subnet.private-subnet-1.id}"
   key_name = "beef"
+  iam_instance_profile = "${aws_iam_instance_profile.ec2-role.name}"
   
   tags = {
     Name = "Web Server"
