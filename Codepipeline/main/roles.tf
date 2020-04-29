@@ -1,7 +1,7 @@
 
 resource "aws_iam_role_policy" "ec2-role-policy" {
   name = "ec2-role-policy"
-  role = aws_iam_role.ec2-role.id
+  role = "${aws_iam_role.ec2-role.id}"
 
   policy = "${file("ec2-policy.json")}"
 }
