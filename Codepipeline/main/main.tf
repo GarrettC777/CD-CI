@@ -156,8 +156,8 @@ resource "aws_eip" "nat" {
 resource "aws_elb" "elb" {
   name               = "vpc-elb"
   #availability_zones = ["us-west-2a","us-west-2b"]
-  subnets = ["${aws_subnet.public-subnet-1.id}", "${aws_subnet.public-subnet-2.id}"]
-  security_groups = ["${aws_security_group.allow_http.id}"]
+  subnets = ["${aws_subnet.private-subnet-1.id}", "${aws_subnet.private-subnet-2.id}"]
+  security_groups = ["${aws_security_group.vpc-secure-maintenance-sg.id}"]
 
   listener {
     instance_port     = 8000
@@ -186,7 +186,14 @@ resource "aws_elb" "elb" {
 
 resource "aws_elb_attachment" "yup" {
   elb      = "${aws_elb.elb.id}"
-  instance = "${aws_instance.webserver.id}"
+  instance = "${aws_instance.webserver1.id}"
+
+  depends_on = ["aws_elb.elb"]
+}
+
+resource "aws_elb_attachment" "yup2" {
+  elb      = "${aws_elb.elb.id}"
+  instance = "${aws_instance.webserver2.id}"
 
   depends_on = ["aws_elb.elb"]
 }
