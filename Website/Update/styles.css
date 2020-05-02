@@ -1,5 +1,5 @@
 body {
-  background-image: url(https://storage.needpix.com/thumbs/shapes-pattern.jpg);
+  background-image: url(https://i.imgur.com/MJAkxbh.png);
 
   margin: 0;
   padding: 0;
@@ -9,7 +9,7 @@ body {
   font-weight: 300;
   font-size: 20px;
   line-height: 1.4;
-  color: #F6F6EE;
+  color: #3D393A;
 }
 #container {
   padding-top: 20px;
@@ -37,7 +37,7 @@ li {
 a {
   font-weight: 700;
   text-decoration: none;
-  color: #E9E9D8;
+  color: #5f6166;
 }
 
 p#pleft {
